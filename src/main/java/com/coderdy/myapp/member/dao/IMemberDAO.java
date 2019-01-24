@@ -4,8 +4,9 @@ import java.util.List;
 
 import com.coderdy.myapp.member.model.MemberVO;
 
+//Service와 구현상 큰 차이는 없지만, DAO는 DB와 연동되어 세션 및 Mybatis코드가 적용된다
 public interface IMemberDAO {
-	public void insertMember(MemberVO member)throws Exception;
-	MemberVO selectMember(String userid)throws Exception;
-	List<MemberVO> selectAllMembers()throws Exception;
+	public void insertMember(MemberVO member);
+	MemberVO selectMember(String userid);
+	List<MemberVO> selectAllMembers();
 }

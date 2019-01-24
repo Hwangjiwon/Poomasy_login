@@ -1,1 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coderdy.myapp.member.dao.mapper">
+	<insert id="insertMember">
+	<![CDATA[
+		INSERT INTO 
+			member (userid, password, email, name, phone) 
+		VALUES 
+			(#{userid}, #{password}, #{email}, #{name}, #{phone})
+	]]>
+	</insert>
+
+	<select id="selectMember" parameterType="string"
+		resultType="com.coderdy.myapp.member.model.MemberVO">
+	<![CDATA[
+		SELECT 
+			userid,
+			password,
+			email,
+			name,
+			phone 
+		FROM 
+			member 
+		WHERE userid=#{userid}
+	]]>
+	</select>
+
+	<select id="selectAllMembers"
+		resultType="com.coderdy.myapp.member.model.MemberVO">
+	<![CDATA[
+		SELECT 
+			userid, password, email, name, phone
+		FROM
+			member
+	]]>
+	</select>
+</mapper>
