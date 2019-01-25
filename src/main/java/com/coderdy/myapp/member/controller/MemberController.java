@@ -4,8 +4,6 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,42 +30,28 @@ public class MemberController {
 	@Autowired
 	IMemberService memberService;
 
-	@RequestMapping(value = "/member/home", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-
-		String formattedDate = dateFormat.format(date);
-
-		model.addAttribute("serverTime", formattedDate);
-
-		return "home";
+	@RequestMapping(value = "/member/*", method = RequestMethod.GET)
+	public String home() {
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "/member/insert", method = RequestMethod.GET)
-	public String insert(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-
-		String formattedDate = dateFormat.format(date);
-
-		model.addAttribute("serverTime", formattedDate);
-
+	public String insert(Model model) {
 		return "member/insert";
 	}
 
-	@RequestMapping(value = "/member/insertService", method = RequestMethod.POST)
-	public String insertService(MemberVO member, Model model, HttpSession session) {
+	@RequestMapping(value = "/member/insert", method = RequestMethod.POST)
+	public String insert(MemberVO member) {
+
+		System.out.println("저장시작");
+		System.out.println("INSERT INFO : "+ member.getUserid());
+		System.out.println("INSERT INFO : "+ member.getPassword());
+		System.out.println("INSERT INFO : "+ member.getEmail());
+		System.out.println("INSERT INFO : "+ member.getName());
+		System.out.println("INSERT INFO : "+ member.getPhone());
 		memberService.insertMemberService(member);
-		session.invalidate();
-		logger.info("회원가입...");
-		logger.info(member.toString());
-		
-		return "home";
+		System.out.println("저장완료");
+		return "member/login";
 	}
 
 	@RequestMapping(value = "/member/login", method = RequestMethod.GET)

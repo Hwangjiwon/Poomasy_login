@@ -11,12 +11,12 @@
 
 <P>  The time on the server is ${serverTime}. </P>
 
-<form action = "/member/insertService" method="post">
-	id<input type = "text" name ="userid"><br>
-	password<input type = "password" name = "password"><br>
-	email<input type = "email" name = "email"><br>
-	name<input type = "text" name = "name"><br>
-	phone<input type = "text" name ="phone"><br>
+<form action = "/myapp/member/insert" method="post">
+	id<input type = "text" name ="userid" id = "userid" ><br>	
+	password<input type = "password" name = "password" id = "password"><br>
+	email<input type = "email" name = "email" id = "email"><br>
+	name<input type = "text" name = "name" id = "name"><br>
+	phone<input type = "text" name ="phone" id = "phone"><br>
 	<input type = "submit" value = "SUBMIT">
 </form>
 

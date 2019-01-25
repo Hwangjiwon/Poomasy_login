@@ -29,19 +29,18 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation"
 			value="classpath:/mybatis-config.xml"></property>
-		<property name="mapperLocations"
-			value="classpath*:com/coderdy/myapp/member/dao/mapper/*Mapper.xml" />
+		<property name="mapperLocations" value="classpath*:com/coderdy/myapp/member/dao/mapper/MemberMapper.xml" />
 	</bean>
-	
+
 	<!--sqlSession 객체 생성 -->
 	<bean id="sqlSession"
 		class="org.mybatis.spring.SqlSessionTemplate"
 		destroy-method="clearCache">
-		<constructor-arg name="sqlSessionFactory"	
+		<constructor-arg name="sqlSessionFactory"
 			ref="sqlSessionFactory"></constructor-arg>
 	</bean>
-	
-	<bean id = "dao" class = "com.coderdy.myapp.member.dao.MemberDAO"></bean>
-	<bean id = "memberDao" class = "com.coderdy.myapp.member.dao.MemberDAO"></bean>
-	<bean id = "memberService" class = "com.coderdy.myapp.member.service.MemberService"></bean>
+
+	<bean id="memberDao" class="com.coderdy.myapp.member.dao.MemberDAO"></bean>
+	<bean id="member" class="com.coderdy.myapp.member.model.MemberVO"></bean>
+	<bean id="memberService" class="com.coderdy.myapp.member.service.MemberService"></bean>
 </beans>

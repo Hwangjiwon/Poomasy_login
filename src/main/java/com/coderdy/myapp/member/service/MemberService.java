@@ -24,7 +24,11 @@ public class MemberService implements IMemberService{
 	@Override
 	public void insertMemberService(MemberVO member) {
 		// TODO Auto-generated method stub
-		logger.info("insertMemberService "+member.toString());
+		logger.info("insertMemberService "+member.getUserid());
+		logger.info("insertMemberService "+member.getPassword());
+		logger.info("insertMemberService "+member.getEmail());
+		logger.info("insertMemberService "+member.getName());
+		logger.info("insertMemberService "+member.getPhone());
 		memberDao.insertMember(member);
 	}
 

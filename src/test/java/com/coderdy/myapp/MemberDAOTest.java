@@ -16,17 +16,17 @@ import com.coderdy.myapp.member.model.MemberVO;
 public class MemberDAOTest {
 
 	@Autowired
-	MemberDAO dao;
+	MemberDAO memberDao;
 
 	@Test
 	public void testInserMember() throws Exception{
 		
-		MemberVO vo = new MemberVO();
-		vo.setUserid("test3");
-		vo.setPassword("12345");
-		vo.setEmail("TestEmail3@test.com");
-		vo.setName("tester3");
-		vo.setPhone("01012245667");
-		dao.insertMember(vo);
+		MemberVO member = new MemberVO();
+		member.setUserid("test7");
+		member.setPassword("12476");
+		member.setEmail("TestEmail7@test.com");
+		member.setName("tester7");
+		member.setPhone("01013675667");
+		memberDao.insertMember(member);
 	}
 }
