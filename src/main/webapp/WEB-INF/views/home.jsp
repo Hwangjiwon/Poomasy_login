@@ -13,5 +13,7 @@
 
 <a href="member/insert">Insert</a>
 <a href="member/login">Login</a>
+<a href="member/logout">Logout</a>
+<a href="member/memberList">MemberList</a>
 </body>
 </html>

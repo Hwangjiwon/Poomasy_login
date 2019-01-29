@@ -40,7 +40,4 @@
 			ref="sqlSessionFactory"></constructor-arg>
 	</bean>
 
-	<bean id="memberDao" class="com.coderdy.myapp.member.dao.MemberDAO"></bean>
-	<bean id="member" class="com.coderdy.myapp.member.model.MemberVO"></bean>
-	<bean id="memberService" class="com.coderdy.myapp.member.service.MemberService"></bean>
 </beans>

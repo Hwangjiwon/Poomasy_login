@@ -8,4 +8,5 @@ public interface IMemberService {
 	void insertMemberService(MemberVO member);
 	MemberVO selectMemberService(String userid);
 	List<MemberVO> selectAllMembersService();
+	void insertSnsMemberService(MemberVO member);
 }

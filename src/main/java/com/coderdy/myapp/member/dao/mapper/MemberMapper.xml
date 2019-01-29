@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.coderdy.myapp.member.dao.mapper.MemberMapper">
+<mapper
+	namespace="com.coderdy.myapp.member.dao.mapper.MemberMapper">
 	<insert id="insertMember">
 	<![CDATA[
 		INSERT INTO 
@@ -35,4 +36,32 @@
 			member
 	]]>
 	</select>
+
+	<select id="selectSnsMemberBySnsId" resultType="com.coderdy.myapp.member.model.MemberVO">
+	<![CDATA[
+		SELECT 
+		a.username,
+		a.email,
+		b.sns_id,
+		b.sns_type,
+		b.sns_name,
+		b.sns_email
+		FROM
+		member a,
+		sns_info b
+		WHERE
+		a.id = b.id
+		AND b.sns_id = #{snsId}
+	]]>
+	</select>
+	
+	<insert id="insertSnsMember">
+	<![CDATA[
+		INSERT INTO 
+			sns_info (sns_id, sns_type, sns_name, sns_email)
+		VALUES 
+			(#{snsId}, #{snsType}, #{snsName}, #{snsEmail})
+	]]>
+	</insert>
+	
 </mapper>

@@ -9,4 +9,5 @@ public interface IMemberDAO {
 	public void insertMember(MemberVO member);
 	MemberVO selectMember(String userid);
 	List<MemberVO> selectAllMembers();
+	public void insertSnsMember(MemberVO member);
 }

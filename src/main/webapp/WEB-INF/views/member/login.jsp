@@ -13,5 +13,9 @@
 
 <a href="home">Home</a>
 <a href="insert">Insert</a>
+<br>
+<a href="${url}">NaverLogin</a>
+<a href="${kakao_url}">KakaoLogin</a>
+
 </body>
 </html>

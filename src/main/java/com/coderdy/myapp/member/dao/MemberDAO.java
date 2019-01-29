@@ -40,4 +40,10 @@ public class MemberDAO implements IMemberDAO {
 		return sqlSession.selectList("com.coderdy.myapp.member.dao.mapper.MemberMapper.selectAllMembers");
 	}
 
+	@Override
+	public void insertSnsMember(MemberVO member) {
+		// TODO Auto-generated method stub
+		sqlSession.insert("com.coderdy.myapp.member.dao.mapper.MemberMapper.insertSnsMember", member);
+	}
+
 }
