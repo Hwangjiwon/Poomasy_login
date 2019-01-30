@@ -151,11 +151,13 @@ public class MemberController {
 		System.out.println(userInfo);
 
 		String id = userInfo.get("id").toString();
+		String email = userInfo.get("kaccount_email").toString();
 		String nickname = userInfo.get("properties").get("nickname").toString();
 
 
 		model.addAttribute("k_userInfo", userInfo);
 		model.addAttribute("id", id);
+		model.addAttribute("email", email);
 		model.addAttribute("nickname", nickname);
 		
 		/*
