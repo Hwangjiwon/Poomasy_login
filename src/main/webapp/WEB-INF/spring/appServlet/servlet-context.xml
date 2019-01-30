@@ -60,7 +60,5 @@
 	<beans:bean id="naverLoginBO"
 		class="com.coderdy.myapp.naver.NaverLoginBO" />
 	<beans:bean id="kakaoLogin"
-		class="com.coderdy.myapp.kakao.KakaoController" />
-	<beans:bean id="kakaoUrl"
-		class="com.coderdy.myapp.kakao.KakaoController" />
+		class="com.coderdy.myapp.kakao.KakaoLogin" />
 </beans:beans>

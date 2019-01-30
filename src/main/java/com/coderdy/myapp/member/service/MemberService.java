@@ -50,7 +50,6 @@ public class MemberService implements IMemberService{
 	public void insertSnsMemberService(MemberVO member) {
 		// TODO Auto-generated method stub
 		logger.info("insertSNSMemberService "+member.getUserid());
-		logger.info("insertSNSMemberService "+member.getPassword());
 		logger.info("insertSNSMemberService "+member.getEmail());
 		logger.info("insertSNSMemberService "+member.getName());
 		memberDao.insertSnsMember(member);

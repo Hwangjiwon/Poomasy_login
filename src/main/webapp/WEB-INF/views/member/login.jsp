@@ -10,8 +10,6 @@
 <body>
 	<h1>Login!!</h1>
 
-	<P>The time on the server is ${serverTime}.</P>
-
 	<div class="container">
 		<div class="pg-opt">
 			<h2>LOGIN</h2>
@@ -46,8 +44,8 @@
 	<a href="home">Home</a>
 	<a href="insert">Insert</a>
 	<br>
-	<a href="${url}">NaverLogin</a>
-	<a href="${kakao_url}">KakaoLogin</a>
+	<a href="${n_url}">NaverLogin</a>
+	<a href="https://kauth.kakao.com/oauth/authorize?client_id=32cf5047e2290a65b781450e52fab213&redirect_uri=http://localhost:8090/myapp/member/kakaoCallback&response_type=code">KakaoLogin</a>
 
 </body>
 </html>

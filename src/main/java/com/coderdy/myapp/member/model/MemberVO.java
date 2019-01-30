@@ -6,7 +6,14 @@ public class MemberVO {
 	public String email;
 	public String name;
 	public String phone;
+	public String sns_type;
 	
+	public String getSns_type() {
+		return sns_type;
+	}
+	public void setSns_type(String sns_type) {
+		this.sns_type = sns_type;
+	}
 	public String getUserid() {
 		return userid;
 	}
