@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -44,7 +45,6 @@ public class MemberController {
 
 	@RequestMapping(value = "/member/insert", method = RequestMethod.GET)
 	public String insert(Model model) {
-		System.out.println("GET INSERT");
 		return "member/insert";
 	}
 
@@ -79,40 +79,67 @@ public class MemberController {
 		this.naverLoginBO = naverLoginBO;
 	}
 	
-
 	@RequestMapping(value = "/member/login", method = RequestMethod.GET)
-	public String login(Locale locale, Model model, HttpSession session) {
-
-		logger.info("Welcome home! The client locale is {}.", locale);
-
+	public String login(Model model,Locale locale){
+		
+		logger.info("Welcome login! The client locale is {}.", locale);
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 
 		String formattedDate = dateFormat.format(date);
 
 		model.addAttribute("serverTime", formattedDate);
+		return "member/login";
+	}
+
+	@RequestMapping(value = "/member/login", method = RequestMethod.POST)
+	public String login(String userid, String password, Model model, HttpSession session) {
+
+		MemberVO member = memberService.selectMemberService(userid);
+		if(member != null) {
+			String dbPassword = member.getPassword();
+			if(dbPassword == null) { //user 정보 없음
+				model.addAttribute("message", "NOT_VALID_USER");
+			} else {
+				if(dbPassword.equals(password)) { //비밀번호 일치
+					session.setAttribute("userid", userid);
+					session.setAttribute("email", member.getEmail());
+					session.setAttribute("name", member.getName());
+					session.setAttribute("phone", member.getPhone());
+					
+					return "member/callback";
+				} else { // 비밀번호 불일치
+					model.addAttribute("massage", "WRONG_PASSWORD");
+				}
+			}
+		} else {
+			model.addAttribute("message", "USER_NOT_FOUND");
+		}
+		session.invalidate();
+		
 
 		/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출 */
-		String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
+	//	String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
 
 		// https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=sE***************&
 		// redirect_uri=http%3A%2F%2F211.63.89.90%3A8090%2Flogin_project%2Fcallback&state=e68c269c-5ba9-4c31-85da-54c16c658125
-		System.out.println("네이버:" + naverAuthUrl);
+	//	System.out.println("네이버:" + naverAuthUrl);
 		// 네이버
-		model.addAttribute("url", naverAuthUrl);
+	//	model.addAttribute("url", naverAuthUrl);
 
 		return "member/login";
 	}
 
 	@RequestMapping(value = "/member/logout", method = RequestMethod.GET)
 	// 메소드 이름은 LOGOUT 매게 변수는 SESSION
-	public String logout(HttpSession session) {
+	public String logout(HttpSession session, HttpServletRequest request) {
 		System.out.println(session + "======logout");
-		session.invalidate();
+		session.invalidate(); //logout
 		
-		return "member/logout";
+		return "redirect:/";
 	}
 
+	/*
 	// 네이버 로그인 성공시 callback호출 메소드
 	@RequestMapping(value = "/member/callback", method = { RequestMethod.GET, RequestMethod.POST })
 	public String callback(Model model, @RequestParam String code, @RequestParam String state, HttpSession session)
@@ -125,11 +152,10 @@ public class MemberController {
 		apiResult = naverLoginBO.getUserProfile(oauthToken);
 		System.out.println(naverLoginBO.getUserProfile(oauthToken).toString());
 		model.addAttribute("result", apiResult);
-		System.out.println("result" + apiResult);
+		System.out.println("result========" + apiResult);	
 		
-		
-		
-		
+	
 		return "member/callback";
 	}
+	*/
 }
