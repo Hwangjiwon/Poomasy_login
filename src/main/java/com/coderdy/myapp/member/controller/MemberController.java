@@ -7,6 +7,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.google.api.Google;
+import org.springframework.social.google.api.impl.GoogleTemplate;
+import org.springframework.social.google.api.plus.Person;
+import org.springframework.social.google.api.plus.PlusOperations;
+import org.springframework.social.google.connect.GoogleConnectionFactory;
+import org.springframework.social.oauth2.AccessGrant;
+import org.springframework.social.oauth2.GrantType;
+import org.springframework.social.oauth2.OAuth2Operations;
+import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -67,13 +77,21 @@ public class MemberController {
 	private void setNaverLoginBO(NaverLoginBO naverLoginBO) {
 		this.naverLoginBO = naverLoginBO;
 	}
-	
+
+	/* KakaoLogin */
 	private KakaoLogin kakaoLogin;
+
 	@Autowired
 	private void setKakaoLogin(KakaoLogin kakaoLogin) {
 		this.kakaoLogin = kakaoLogin;
 	}
-	
+
+	/* GoogleLogin */
+	@Autowired
+	private GoogleConnectionFactory googleConnectionFactory;
+	@Autowired
+	private OAuth2Parameters googleOAuth2Parameters;
+
 	@RequestMapping(value = "/member/login", method = RequestMethod.GET)
 	public String login(Model model, HttpSession session) {
 		/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출 */
@@ -83,6 +101,12 @@ public class MemberController {
 		// redirect_uri=http%3A%2F%2F211.63.89.90%3A8090%2Flogin_project%2Fcallback&state=e68c269c-5ba9-4c31-85da-54c16c658125
 		System.out.println("네이버:" + naverAuthUrl);
 		model.addAttribute("n_url", naverAuthUrl);
+
+		/* 구글code 발행 */
+		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
+		/* 구글로그인페이지 이동 url생성 */
+		String googleAuthUrl = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, googleOAuth2Parameters);
+		model.addAttribute("g_url", googleAuthUrl);
 
 		return "member/login";
 	}
@@ -125,9 +149,9 @@ public class MemberController {
 	}
 
 	// 네이버 로그인 성공시 callback호출 메소드
-	@RequestMapping(value = "/member/callback", method = {RequestMethod.POST, RequestMethod.GET})
-	public String naverCallback(ModelMap model, @RequestParam String code, @RequestParam String state, HttpSession session)
-			throws IOException {
+	@RequestMapping(value = "/member/naverCallback", method = { RequestMethod.POST, RequestMethod.GET })
+	public String naverCallback(ModelMap model, @RequestParam String code, @RequestParam String state,
+			HttpSession session) throws IOException {
 		/* 네아로 인증이 성공적으로 완료되면 code 파라미터가 전달되며 이를 통해 access token을 발급 */
 		OAuth2AccessToken oauthToken;
 		oauthToken = naverLoginBO.getAccessToken(session, code, state);
@@ -136,13 +160,11 @@ public class MemberController {
 		apiResult = naverLoginBO.getUserProfile(oauthToken);
 		model.addAttribute("result", apiResult);
 
-		return "member/callback";
+		return "member/naverCallback";
 	}
 
-	
-	
 	// 카카오 로그인 성공시 callback호출 메소드
-	@RequestMapping(value = "/member/kakaoCallback", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/member/kakaoCallback", method = { RequestMethod.POST, RequestMethod.GET })
 	public String kakaoCallback(ModelMap model, @RequestParam("code") String code, HttpSession session)
 			throws Exception {
 
@@ -154,33 +176,66 @@ public class MemberController {
 		String email = userInfo.get("kaccount_email").toString();
 		String nickname = userInfo.get("properties").get("nickname").toString();
 
-
 		model.addAttribute("k_userInfo", userInfo);
 		model.addAttribute("id", id);
 		model.addAttribute("email", email);
 		model.addAttribute("nickname", nickname);
-		
+
 		/*
-		JsonNode token = KakaoLogin.getAccessToken(code);
+		 * JsonNode token = KakaoLogin.getAccessToken(code);
+		 * 
+		 * JsonNode profile =
+		 * KakaoLogin.getKakaoUserInfo(token.path("access_token").toString());
+		 * System.out.println(profile); MemberVO member =
+		 * KakaoLogin.changeData(profile); member.setUserid(member.getUserid());
+		 * System.out.println("member.getUerId() : " + member.getUserid());
+		 * member.setEmail(member.getEmail()); System.out.println("member.getEmail() : "
+		 * + member.getEmail()); member.setSns_type("k");
+		 * System.out.println("member.getSns_type() : " + member.getSns_type());
+		 * 
+		 * System.out.println("session: " + session); session.setAttribute("login",
+		 * member); System.out.println(member.toString());
+		 * 
+		 * memberService.insertSnsMemberService(member);
+		 * 
+		 */
 
-		JsonNode profile = KakaoLogin.getKakaoUserInfo(token.path("access_token").toString());
-		System.out.println(profile);
-		MemberVO member = KakaoLogin.changeData(profile);
-		member.setUserid(member.getUserid());
-		System.out.println("member.getUerId() : " + member.getUserid());
-		member.setEmail(member.getEmail());
-		System.out.println("member.getEmail() : " + member.getEmail());
-		member.setSns_type("k");
-		System.out.println("member.getSns_type() : " + member.getSns_type());
-
-		System.out.println("session: " + session);
-		session.setAttribute("login", member);
-		System.out.println(member.toString());
-
-		memberService.insertSnsMemberService(member);
-		
-		*/
-		
 		return "member/kakaoCallback";
-	}	
+	}
+
+	/* Google callback controller */
+	@RequestMapping(value = "/member/googleCallback", method = { RequestMethod.GET, RequestMethod.POST })
+	public String googleCallback(ModelMap model,HttpServletRequest request) throws Exception {
+
+		System.out.println("Google login success");
+		String code = request.getParameter("code");
+
+		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
+		AccessGrant accessGrant = oauthOperations.exchangeForAccess(code, googleOAuth2Parameters.getRedirectUri(),
+				null);
+
+		String accessToken = accessGrant.getAccessToken();
+		Long expireTime = accessGrant.getExpireTime();
+		if (expireTime != null && expireTime < System.currentTimeMillis()) {
+			accessToken = accessGrant.getRefreshToken();
+			System.out.printf("accessToken is expired. refresh token = {}", accessToken);
+		}
+		Connection<Google> connection = googleConnectionFactory.createConnection(accessGrant);
+		Google google = connection == null ? new GoogleTemplate(accessToken) : connection.getApi();
+
+		PlusOperations plusOperations = google.plusOperations();
+		Person profile = plusOperations.getGoogleProfile();
+		System.out.println(profile.getDisplayName());
+		model.addAttribute("g_userInfo", profile);
+		model.addAttribute("g_userName", profile.getDisplayName());
+		model.addAttribute("g_userEmail", profile.getAccountEmail());
+		model.addAttribute("g_userEmail2", profile.getEmailAddresses());
+		model.addAttribute("g_userId", profile.getId());
+		
+		System.out.println(profile.getAccountEmail());
+		System.out.println(profile.getEmailAddresses());
+		System.out.println(profile.getId());
+		
+		return "member/googleCallback";
+	}
 }

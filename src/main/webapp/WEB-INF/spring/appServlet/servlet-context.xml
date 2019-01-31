@@ -25,7 +25,25 @@
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
+	<!-- google Class Bean설정 추가 -->
+	<!-- 클라이언트ID와 보안비밀 세팅 -->
+	<beans:bean id="googleConnectionFactory"
+		class="org.springframework.social.google.connect.GoogleConnectionFactory">
+		<beans:constructor-arg
+			value="803938964966-83d2tf3ia82a3b4qm9nq8r39mhe6v074.apps.googleusercontent.com" />
+		<beans:constructor-arg value="AVFi8uURwznGiSJkye5Z74am" />
+	</beans:bean>
 
+	<!-- 승인된 자바스크립트 원본과 승인된 리디렉션 URI -->
+	<beans:bean id="googleOAuth2Parameters"
+		class="org.springframework.social.oauth2.OAuth2Parameters">
+		<beans:property name="scope"
+			value="https://www.googleapis.com/auth/plus.login" />
+		<beans:property name="redirectUri"
+			value="http://localhost:8090/myapp/member/googleCallback" />
+	</beans:bean>
+	
+	
 	<context:component-scan
 		base-package="com.coderdy.myapp" />
 	<context:component-scan
@@ -61,4 +79,6 @@
 		class="com.coderdy.myapp.naver.NaverLoginBO" />
 	<beans:bean id="kakaoLogin"
 		class="com.coderdy.myapp.kakao.KakaoLogin" />
+
+
 </beans:beans>

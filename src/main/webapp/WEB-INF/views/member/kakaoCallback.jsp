@@ -14,10 +14,9 @@
 		<div>Kakao Login : ${k_userInfo}</div>
 		<div>Kakao id: ${k_id}</div>
 		<div>Kakao Email : ${k_email}</div>
-		<div>Kakao nicname : ${k_nickname}</div>
+		<div>Kakao nickname : ${k_nickname}</div>
 		
-		<a
-			href="<c:url value='https://accounts.kakao.com/weblogin/account/connected_apps#pageConnectedAppDetail'/>">SIGN_OUT</a>
+		<a href="<c:url value='https://accounts.kakao.com/weblogin/account/connected_apps#pageConnectedAppDetail'/>">SIGN_OUT</a>
 	</c:if>
 
 	<script>
