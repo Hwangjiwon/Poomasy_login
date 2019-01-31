@@ -31,7 +31,8 @@
 		class="org.springframework.social.google.connect.GoogleConnectionFactory">
 		<beans:constructor-arg
 			value="803938964966-83d2tf3ia82a3b4qm9nq8r39mhe6v074.apps.googleusercontent.com" />
-		<beans:constructor-arg value="AVFi8uURwznGiSJkye5Z74am" />
+		<beans:constructor-arg
+			value="AVFi8uURwznGiSJkye5Z74am" />
 	</beans:bean>
 
 	<!-- 승인된 자바스크립트 원본과 승인된 리디렉션 URI -->
@@ -42,8 +43,8 @@
 		<beans:property name="redirectUri"
 			value="http://localhost:8090/myapp/member/googleCallback" />
 	</beans:bean>
-	
-	
+
+
 	<context:component-scan
 		base-package="com.coderdy.myapp" />
 	<context:component-scan
@@ -60,6 +61,8 @@
 		base-package="com.coderdy.myapp.naver" />
 	<context:component-scan
 		base-package="com.coderdy.myapp.kakao" />
+	<context:component-scan
+		base-package="com.coderdy.myapp.facebook" />
 
 	<context:annotation-config>
 		<context:component-scan
@@ -79,6 +82,8 @@
 		class="com.coderdy.myapp.naver.NaverLoginBO" />
 	<beans:bean id="kakaoLogin"
 		class="com.coderdy.myapp.kakao.KakaoLogin" />
+	<beans:bean id="facebookLogin"
+		class="com.coderdy.myapp.facebook.FacebookController" />
 
 
 </beans:beans>

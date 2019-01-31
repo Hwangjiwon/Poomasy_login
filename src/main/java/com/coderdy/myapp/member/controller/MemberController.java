@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.coderdy.myapp.facebook.FacebookController;
 import com.coderdy.myapp.kakao.KakaoLogin;
 import com.coderdy.myapp.member.model.MemberVO;
 import com.coderdy.myapp.member.service.IMemberService;
@@ -92,22 +93,25 @@ public class MemberController {
 	@Autowired
 	private OAuth2Parameters googleOAuth2Parameters;
 
+	/* FacebookLogin */
+	@Autowired
+	private FacebookController facebookLogin;
+	
 	@RequestMapping(value = "/member/login", method = RequestMethod.GET)
-	public String login(Model model, HttpSession session) {
+	public String login(Model model, HttpSession session, String code) throws Exception {
 		/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출 */
 		String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
-
-		// https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=sE***************&
-		// redirect_uri=http%3A%2F%2F211.63.89.90%3A8090%2Flogin_project%2Fcallback&state=e68c269c-5ba9-4c31-85da-54c16c658125
-		System.out.println("네이버:" + naverAuthUrl);
 		model.addAttribute("n_url", naverAuthUrl);
 
-		/* 구글code 발행 */
+		/* 구글code 발행 구글로그인페이지 이동 url생성 */
 		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
-		/* 구글로그인페이지 이동 url생성 */
 		String googleAuthUrl = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, googleOAuth2Parameters);
 		model.addAttribute("g_url", googleAuthUrl);
-
+		
+		/* facebook 로그인 이동 url 생성 */
+		String facebookAuthUrl = facebookLogin.getAuthorizationUrl(session);
+		model.addAttribute("f_url", facebookAuthUrl);
+		
 		return "member/login";
 	}
 
@@ -205,7 +209,7 @@ public class MemberController {
 
 	/* Google callback controller */
 	@RequestMapping(value = "/member/googleCallback", method = { RequestMethod.GET, RequestMethod.POST })
-	public String googleCallback(ModelMap model,HttpServletRequest request) throws Exception {
+	public String googleCallback(ModelMap model, HttpServletRequest request) throws Exception {
 
 		System.out.println("Google login success");
 		String code = request.getParameter("code");
@@ -228,14 +232,25 @@ public class MemberController {
 		System.out.println(profile.getDisplayName());
 		model.addAttribute("g_userInfo", profile);
 		model.addAttribute("g_userName", profile.getDisplayName());
-		model.addAttribute("g_userEmail", profile.getAccountEmail());
-		model.addAttribute("g_userEmail2", profile.getEmailAddresses());
 		model.addAttribute("g_userId", profile.getId());
-		
+
 		System.out.println(profile.getAccountEmail());
 		System.out.println(profile.getEmailAddresses());
 		System.out.println(profile.getId());
-		
+
 		return "member/googleCallback";
 	}
+
+	@RequestMapping(value = "/member/facebookCallback")
+	  public String facebookCallback(ModelMap model, String code, HttpSession session, String state) throws Exception {
+	    //logger.debug("facebookAccessToken / code : "+code);
+
+	    String accessToken = facebookLogin.requesFaceBooktAccesToken(session, code);
+	    String facebookResult = facebookLogin.facebookUserDataLoadAndSave(accessToken, session);
+
+	    //가져온정보 보내기
+	    model.addAttribute("fResult", facebookResult);
+	    System.out.println(facebookResult);
+	    return "member/facebookCallback";
+	  }
 }

@@ -47,5 +47,6 @@
 	<a href="${n_url}">NaverLogin</a>
 	<a href="https://kauth.kakao.com/oauth/authorize?client_id=32cf5047e2290a65b781450e52fab213&redirect_uri=http://localhost:8090/myapp/member/kakaoCallback&response_type=code">KakaoLogin</a>
 	<a href="${g_url}">GoogleLogin</a>
+	<a href="${f_url}">FacebookLogin</a>
 </body>
 </html>
