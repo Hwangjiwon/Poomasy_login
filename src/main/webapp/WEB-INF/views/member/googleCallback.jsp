@@ -11,8 +11,6 @@
 	<c:if test="${not empty g_userInfo}">
 		<div>Google Profile : ${g_userInfo}</div>
 		<div>Google Name : ${g_userName}</div>
-		<div>Google Email : ${g_userEmail}</div>
-		<div>Google Email2 : ${g_userEmail2}</div>
 		<div>Google Id : ${g_userId}</div>
 		
 		<a href="<c:url value='https://myaccount.google.com/permissions?utm_source=google-account&utm_medium=web'/>">SIGN_OUT</a>

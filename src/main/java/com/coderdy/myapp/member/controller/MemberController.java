@@ -31,6 +31,8 @@ import com.coderdy.myapp.member.service.IMemberService;
 import com.coderdy.myapp.naver.NaverLoginBO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  * Handles requests for the application home page.
@@ -96,7 +98,7 @@ public class MemberController {
 	/* FacebookLogin */
 	@Autowired
 	private FacebookController facebookLogin;
-	
+
 	@RequestMapping(value = "/member/login", method = RequestMethod.GET)
 	public String login(Model model, HttpSession session, String code) throws Exception {
 		/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출 */
@@ -107,11 +109,11 @@ public class MemberController {
 		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
 		String googleAuthUrl = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, googleOAuth2Parameters);
 		model.addAttribute("g_url", googleAuthUrl);
-		
+
 		/* facebook 로그인 이동 url 생성 */
 		String facebookAuthUrl = facebookLogin.getAuthorizationUrl(session);
 		model.addAttribute("f_url", facebookAuthUrl);
-		
+
 		return "member/login";
 	}
 
@@ -164,6 +166,13 @@ public class MemberController {
 		apiResult = naverLoginBO.getUserProfile(oauthToken);
 		model.addAttribute("result", apiResult);
 
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(apiResult);
+		JsonObject memberObj = (JsonObject) jsonObj.get("response");
+
+		model.addAttribute("n_id", memberObj.get("id"));
+		model.addAttribute("n_email", memberObj.get("email"));
+
 		return "member/naverCallback";
 	}
 
@@ -173,37 +182,13 @@ public class MemberController {
 			throws Exception {
 
 		JsonNode userInfo = kakaoLogin.getKakaoUserInfo(code);
-
+	
 		System.out.println(userInfo);
-
-		String id = userInfo.get("id").toString();
-		String email = userInfo.get("kaccount_email").toString();
-		String nickname = userInfo.get("properties").get("nickname").toString();
-
-		model.addAttribute("k_userInfo", userInfo);
-		model.addAttribute("id", id);
-		model.addAttribute("email", email);
-		model.addAttribute("nickname", nickname);
-
-		/*
-		 * JsonNode token = KakaoLogin.getAccessToken(code);
-		 * 
-		 * JsonNode profile =
-		 * KakaoLogin.getKakaoUserInfo(token.path("access_token").toString());
-		 * System.out.println(profile); MemberVO member =
-		 * KakaoLogin.changeData(profile); member.setUserid(member.getUserid());
-		 * System.out.println("member.getUerId() : " + member.getUserid());
-		 * member.setEmail(member.getEmail()); System.out.println("member.getEmail() : "
-		 * + member.getEmail()); member.setSns_type("k");
-		 * System.out.println("member.getSns_type() : " + member.getSns_type());
-		 * 
-		 * System.out.println("session: " + session); session.setAttribute("login",
-		 * member); System.out.println(member.toString());
-		 * 
-		 * memberService.insertSnsMemberService(member);
-		 * 
-		 */
-
+		model.addAttribute("k_userInfo", userInfo); 
+		
+		model.addAttribute("k_id", userInfo.get("id").asText());
+		model.addAttribute("k_name",userInfo.get("properties").get("nickname").asText());
+		
 		return "member/kakaoCallback";
 	}
 
@@ -234,23 +219,30 @@ public class MemberController {
 		model.addAttribute("g_userName", profile.getDisplayName());
 		model.addAttribute("g_userId", profile.getId());
 
-		System.out.println(profile.getAccountEmail());
-		System.out.println(profile.getEmailAddresses());
 		System.out.println(profile.getId());
 
 		return "member/googleCallback";
 	}
 
+	/* Facebook callback controller */
 	@RequestMapping(value = "/member/facebookCallback")
-	  public String facebookCallback(ModelMap model, String code, HttpSession session, String state) throws Exception {
-	    //logger.debug("facebookAccessToken / code : "+code);
-
-	    String accessToken = facebookLogin.requesFaceBooktAccesToken(session, code);
-	    String facebookResult = facebookLogin.facebookUserDataLoadAndSave(accessToken, session);
-
-	    //가져온정보 보내기
-	    model.addAttribute("fResult", facebookResult);
-	    System.out.println(facebookResult);
-	    return "member/facebookCallback";
-	  }
+	public String facebookCallback(ModelMap model, String code, HttpSession session, String state) throws Exception {
+		// logger.debug("facebookAccessToken / code : "+code);
+		
+		String accessToken = facebookLogin.requesFaceBooktAccesToken(session, code);
+		String facebookResult = facebookLogin.facebookUserDataLoadAndSave(accessToken, session);
+		
+		// 가져온정보 보내기
+		model.addAttribute("fResult", facebookResult);
+		System.out.println(facebookResult);
+		
+		JsonParser Parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) Parser.parse(facebookResult);
+		
+		model.addAttribute("f_name",jsonObj.get("name"));
+		model.addAttribute("f_id",jsonObj.get("id"));
+		model.addAttribute("f_email",jsonObj.get("email"));
+		
+		return "member/facebookCallback";
+	}
 }

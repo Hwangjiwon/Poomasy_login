@@ -12,6 +12,9 @@
 	<c:if test="${not empty result}">
 
 		<div>Naver Login : ${result}</div>
+		<div>Naver id : ${n_id}</div>
+		<div>Naver email : ${n_email}</div>
+		
 		<a href="<c:url value='http://nid.naver.com/nidlogin.logout'/>">SIGN_OUT</a>
 
 		<p>네이버 개발자 센터 네이버 로그아웃에 대한 별도의 api가 없으며 사용자가 직접 네이버 서비스에서

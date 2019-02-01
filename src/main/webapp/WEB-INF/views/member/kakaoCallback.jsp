@@ -12,16 +12,11 @@
 	<!-- 카카오로그인 -->
 	<c:if test="${not empty k_userInfo}">
 		<div>Kakao Login : ${k_userInfo}</div>
-		<div>Kakao id: ${k_id}</div>
+		<div>Kakao Id : ${k_id}</div>
+		<div>Kakao name : ${k_name}</div>
 		
 		<a href="<c:url value='https://accounts.kakao.com/weblogin/account/connected_apps#pageConnectedAppDetail'/>">SIGN_OUT</a>
 	</c:if>
 
-	<script>
-		if ('${k_userInfo}') {
-
-			$("#k_id").text("아이디 : " + '${id}');
-		}
-	</script>
 </body>
 </html>
