@@ -33,7 +33,6 @@ import com.coderdy.myapp.member.service.IMemberService;
 import com.coderdy.myapp.naver.NaverLoginBO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.scribejava.core.model.OAuth2AccessToken;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -292,11 +291,5 @@ public class MemberController {
 		memberService.insertSnsMemberService(snsMember);
 
 		return "member/facebookCallback";
-	}
-	
-	@RequestMapping(value = "/member/updateSnsMember", method = RequestMethod.POST)
-	public void updateSnsMamber(SnsMemberVO snsMember) {
-		
-		memberService.updateSnsMember(snsMember);
 	}
 }

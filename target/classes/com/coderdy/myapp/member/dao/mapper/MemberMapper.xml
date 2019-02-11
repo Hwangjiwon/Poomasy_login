@@ -34,7 +34,7 @@
 		WHERE userid=#{userid}
 	]]>
 	</select>
-	
+
 	<select id="selectAllMembers"
 		resultType="com.coderdy.myapp.member.model.MemberVO">
 	<![CDATA[
@@ -51,16 +51,6 @@
 			sns_info (sns_id, sns_type, sns_name, sns_email)
 		VALUES 
 			(#{sns_id}, #{sns_type}, #{sns_name}, #{sns_email})
-	]]>
-	</insert>
-
-	<insert id = "updateSnsMember">
-	<![CDATA[
-		UPDATE 
-			sns_info
-		SET
-			sns_phone=#{sns_phone}, sns_gender=#{sns_gender}
-		WHERE sns_id=#{sns_id}
 	]]>
 	</insert>
 </mapper>

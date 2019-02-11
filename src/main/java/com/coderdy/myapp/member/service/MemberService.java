@@ -53,11 +53,5 @@ public class MemberService implements IMemberService {
 	public MemberVO idCheck(String userid) {
 		// TODO Auto-generated method stub
 		return memberDao.idCheck(userid);
-	}
-
-	@Override
-	public void updateSnsMember(SnsMemberVO snsMember) {
-		// TODO Auto-generated method stub
-		memberDao.updateSnsMember(snsMember);
-	}
+	}	
 }

@@ -18,12 +18,6 @@
 		<div>Facebook Id : ${f_id}</div>
 		<div>Facebook Email : ${f_email}</div>
 		<br>
-		<form action="/myapp/member/updateSnsMember" method="post">
-			phone<input type="text" name="phone" id="phone"><br>
-			<input type="radio" name="gender" value="Male">Male
-			<input type="radio" name="gender" value="Female">Female<br>
-			<button type="submit" id="submit">Submit</button>
-		</form>
 		<a href="<c:url value='https://www.facebook.com/?stype=lo&jlou=AfcsQCdjEH83VH4_4v1m5frEkSzaU2IIMQoQSFS5quYTDXAxJipptLLx3Ii7mM_cZwX_cYbu642fAiz6X7QBAt4nFeMxAUO7it-492-tZ2Mj_g&smuh=17071&lh=Ac_3ZsQ_un1yuB7L'/>">SIGN_OUT</a>
 
 	</c:if>

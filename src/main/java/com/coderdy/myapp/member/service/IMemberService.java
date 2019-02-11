@@ -11,5 +11,4 @@ public interface IMemberService {
 	MemberVO selectMemberService(String userid);
 	List<MemberVO> selectAllMembersService();
 	void insertSnsMemberService(SnsMemberVO snsMember);
-	public void updateSnsMember(SnsMemberVO snsMember);
 }
