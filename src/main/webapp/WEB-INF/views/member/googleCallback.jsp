@@ -12,7 +12,13 @@
 		<div>Google Profile : ${g_userInfo}</div>
 		<div>Google Name : ${g_userName}</div>
 		<div>Google Id : ${g_userId}</div>
-		
+		<br>
+		<form action="/myapp/member/updateSnsMember" method="post">
+			phone<input type="text" name="phone" id="phone"><br>
+			<input type="radio" name="gender" value="Male">Male
+			<input type="radio" name="gender" value="Female">Female<br>
+			<button type="submit" id="submit">Submit</button>
+		</form>
 		<a href="<c:url value='https://myaccount.google.com/permissions?utm_source=google-account&utm_medium=web'/>">SIGN_OUT</a>
 	</c:if>
 	

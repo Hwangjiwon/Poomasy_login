@@ -11,6 +11,14 @@
 			(#{userid}, #{password}, #{email}, #{name}, #{phone})
 	]]>
 	</insert>
+	<!-- 아이디 확인 -->
+	<select id="idCheck"
+		resultType="com.coderdy.myapp.member.model.MemberVO">
+	<![CDATA[
+		SELECT userid FROM member
+		WHERE userid = #{userid}
+	]]>
+	</select>
 
 	<select id="selectMember" parameterType="string"
 		resultType="com.coderdy.myapp.member.model.MemberVO">
@@ -26,7 +34,7 @@
 		WHERE userid=#{userid}
 	]]>
 	</select>
-
+	
 	<select id="selectAllMembers"
 		resultType="com.coderdy.myapp.member.model.MemberVO">
 	<![CDATA[
@@ -37,31 +45,22 @@
 	]]>
 	</select>
 
-	<select id="selectSnsMemberBySnsId" resultType="com.coderdy.myapp.member.model.MemberVO">
-	<![CDATA[
-		SELECT 
-		a.username,
-		a.email,
-		b.sns_id,
-		b.sns_type,
-		b.sns_name,
-		b.sns_email
-		FROM
-		member a,
-		sns_info b
-		WHERE
-		a.id = b.id
-		AND b.sns_id = #{snsId}
-	]]>
-	</select>
-	
 	<insert id="insertSnsMember">
 	<![CDATA[
 		INSERT INTO 
 			sns_info (sns_id, sns_type, sns_name, sns_email)
 		VALUES 
-			(#{snsId}, #{snsType}, #{snsName}, #{snsEmail})
+			(#{sns_id}, #{sns_type}, #{sns_name}, #{sns_email})
 	]]>
 	</insert>
-	
+
+	<insert id = "updateSnsMember">
+	<![CDATA[
+		UPDATE 
+			sns_info
+		SET
+			sns_phone=#{sns_phone}, sns_gender=#{sns_gender}
+		WHERE sns_id=#{sns_id}
+	]]>
+	</insert>
 </mapper>

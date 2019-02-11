@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.coderdy.myapp.member.controller.MemberController;
 import com.coderdy.myapp.member.model.MemberVO;
+import com.coderdy.myapp.member.model.SnsMemberVO;
 
 @Repository // 해당 클래스가 DAO라는 것을 알리기 위한 어노테이션
 public class MemberDAO implements IMemberDAO {
@@ -41,9 +42,22 @@ public class MemberDAO implements IMemberDAO {
 	}
 
 	@Override
-	public void insertSnsMember(MemberVO member) {
+	public void insertSnsMember(SnsMemberVO snsMember) {
 		// TODO Auto-generated method stub
-		sqlSession.insert("com.coderdy.myapp.member.dao.mapper.MemberMapper.insertSnsMember", member);
+		sqlSession.insert("com.coderdy.myapp.member.dao.mapper.MemberMapper.insertSnsMember", snsMember);
+	}
+
+	@Override
+	public MemberVO idCheck(String userid) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("com.coderdy.myapp.member.dao.mapper.MemberMapper.idCheck",userid);
+	}
+
+	@Override
+	public void updateSnsMember(SnsMemberVO snsMember) {
+		// TODO Auto-generated method stub
+		sqlSession.update("com.coderdy.myapp.member.dao.mapper.MemberMapper.updateSnsMember", snsMember);
+		
 	}
 
 }

@@ -23,14 +23,17 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.coderdy.myapp.facebook.FacebookController;
 import com.coderdy.myapp.kakao.KakaoLogin;
 import com.coderdy.myapp.member.model.MemberVO;
+import com.coderdy.myapp.member.model.SnsMemberVO;
 import com.coderdy.myapp.member.service.IMemberService;
 import com.coderdy.myapp.naver.NaverLoginBO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -47,6 +50,22 @@ public class MemberController {
 	@Autowired
 	IMemberService memberService;
 
+	// 회원 확인
+	@ResponseBody
+	@RequestMapping(value = "/member/idCheck", method = RequestMethod.POST)
+	public int postIdCheck(HttpServletRequest req) throws Exception {
+
+		String userid = req.getParameter("userid");
+		MemberVO idCheck = memberService.idCheck(userid);
+
+		int result = 0;
+
+		if (idCheck != null) {
+			result = 1;
+		}
+		return result;
+	}
+
 	@RequestMapping(value = "/member/*", method = RequestMethod.GET)
 	public String home() {
 		return "redirect:/";
@@ -59,6 +78,7 @@ public class MemberController {
 
 	@RequestMapping(value = "/member/insert", method = RequestMethod.POST)
 	public String insert(MemberVO member) {
+
 		memberService.insertMemberService(member);
 		return "redirect:/";
 	}
@@ -153,7 +173,8 @@ public class MemberController {
 
 		return "redirect:/";
 	}
-
+	
+	
 	// 네이버 로그인 성공시 callback호출 메소드
 	@RequestMapping(value = "/member/naverCallback", method = { RequestMethod.POST, RequestMethod.GET })
 	public String naverCallback(ModelMap model, @RequestParam String code, @RequestParam String state,
@@ -173,6 +194,13 @@ public class MemberController {
 		model.addAttribute("n_id", memberObj.get("id"));
 		model.addAttribute("n_email", memberObj.get("email"));
 
+		SnsMemberVO snsMember = new SnsMemberVO();
+		snsMember.setSns_type("n");
+		snsMember.setSns_id(memberObj.get("id").toString());
+		snsMember.setSns_email(memberObj.get("email").toString());
+
+		memberService.insertSnsMemberService(snsMember);
+
 		return "member/naverCallback";
 	}
 
@@ -182,13 +210,20 @@ public class MemberController {
 			throws Exception {
 
 		JsonNode userInfo = kakaoLogin.getKakaoUserInfo(code);
-	
+
 		System.out.println(userInfo);
-		model.addAttribute("k_userInfo", userInfo); 
-		
+		model.addAttribute("k_userInfo", userInfo);
+
 		model.addAttribute("k_id", userInfo.get("id").asText());
-		model.addAttribute("k_name",userInfo.get("properties").get("nickname").asText());
-		
+		model.addAttribute("k_name", userInfo.get("properties").get("nickname").asText());
+
+		SnsMemberVO snsMember = new SnsMemberVO();
+		snsMember.setSns_type("k");
+		snsMember.setSns_id(userInfo.get("id").asText());
+		snsMember.setSns_name(userInfo.get("properties").get("nickname").asText());
+
+		memberService.insertSnsMemberService(snsMember);
+
 		return "member/kakaoCallback";
 	}
 
@@ -221,6 +256,12 @@ public class MemberController {
 
 		System.out.println(profile.getId());
 
+		SnsMemberVO snsMember = new SnsMemberVO();
+		snsMember.setSns_type("g");
+		snsMember.setSns_id(profile.getId());
+		snsMember.setSns_name(profile.getDisplayName());
+		memberService.insertSnsMemberService(snsMember);
+
 		return "member/googleCallback";
 	}
 
@@ -228,21 +269,34 @@ public class MemberController {
 	@RequestMapping(value = "/member/facebookCallback")
 	public String facebookCallback(ModelMap model, String code, HttpSession session, String state) throws Exception {
 		// logger.debug("facebookAccessToken / code : "+code);
-		
+
 		String accessToken = facebookLogin.requesFaceBooktAccesToken(session, code);
 		String facebookResult = facebookLogin.facebookUserDataLoadAndSave(accessToken, session);
-		
+
 		// 가져온정보 보내기
 		model.addAttribute("fResult", facebookResult);
 		System.out.println(facebookResult);
-		
+
 		JsonParser Parser = new JsonParser();
 		JsonObject jsonObj = (JsonObject) Parser.parse(facebookResult);
-		
-		model.addAttribute("f_name",jsonObj.get("name"));
-		model.addAttribute("f_id",jsonObj.get("id"));
-		model.addAttribute("f_email",jsonObj.get("email"));
-		
+
+		model.addAttribute("f_name", jsonObj.get("name"));
+		model.addAttribute("f_id", jsonObj.get("id"));
+		model.addAttribute("f_email", jsonObj.get("email"));
+
+		SnsMemberVO snsMember = new SnsMemberVO();
+		snsMember.setSns_type("f");
+		snsMember.setSns_id(jsonObj.get("id").toString());
+		snsMember.setSns_email(jsonObj.get("email").toString());
+		snsMember.setSns_name(jsonObj.get("name").toString());
+		memberService.insertSnsMemberService(snsMember);
+
 		return "member/facebookCallback";
+	}
+	
+	@RequestMapping(value = "/member/updateSnsMember", method = RequestMethod.POST)
+	public void updateSnsMamber(SnsMemberVO snsMember) {
+		
+		memberService.updateSnsMember(snsMember);
 	}
 }

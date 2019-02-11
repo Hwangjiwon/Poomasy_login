@@ -11,31 +11,27 @@ import org.springframework.stereotype.Service;
 import com.coderdy.myapp.member.controller.MemberController;
 import com.coderdy.myapp.member.dao.IMemberDAO;
 import com.coderdy.myapp.member.model.MemberVO;
+import com.coderdy.myapp.member.model.SnsMemberVO;
 
 @Service
-public class MemberService implements IMemberService{
+public class MemberService implements IMemberService {
 
 	@Autowired
 	private IMemberDAO memberDao;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
-	
 	@Override
 	public void insertMemberService(MemberVO member) {
 		// TODO Auto-generated method stub
-		logger.info("insertMemberService "+member.getUserid());
-		logger.info("insertMemberService "+member.getPassword());
-		logger.info("insertMemberService "+member.getEmail());
-		logger.info("insertMemberService "+member.getName());
-		logger.info("insertMemberService "+member.getPhone());
+		logger.info("insertMemberService " + member);
 		memberDao.insertMember(member);
 	}
 
 	@Override
 	public MemberVO selectMemberService(String userid) {
 		// TODO Auto-generated method stub
-		logger.info("selectMemberService "+userid.toString());
+		logger.info("selectMemberService " + userid.toString());
 		return memberDao.selectMember(userid);
 	}
 
@@ -47,12 +43,21 @@ public class MemberService implements IMemberService{
 	}
 
 	@Override
-	public void insertSnsMemberService(MemberVO member) {
+	public void insertSnsMemberService(SnsMemberVO snsMember) {
 		// TODO Auto-generated method stub
-		logger.info("insertSNSMemberService "+member.getUserid());
-		logger.info("insertSNSMemberService "+member.getEmail());
-		logger.info("insertSNSMemberService "+member.getName());
-		memberDao.insertSnsMember(member);
+		logger.info("insertSnsMemberService " + snsMember);
+		memberDao.insertSnsMember(snsMember);
 	}
 
+	@Override
+	public MemberVO idCheck(String userid) {
+		// TODO Auto-generated method stub
+		return memberDao.idCheck(userid);
+	}
+
+	@Override
+	public void updateSnsMember(SnsMemberVO snsMember) {
+		// TODO Auto-generated method stub
+		memberDao.updateSnsMember(snsMember);
+	}
 }

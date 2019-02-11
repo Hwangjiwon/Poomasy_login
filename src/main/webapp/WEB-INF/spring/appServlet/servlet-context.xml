@@ -76,6 +76,8 @@
 		class="com.coderdy.myapp.member.dao.MemberDAO" />
 	<beans:bean id="member"
 		class="com.coderdy.myapp.member.model.MemberVO" />
+	<beans:bean id = "snsMember"
+		class="com.coderdy.myapp.member.model.SnsMemberVO" />
 	<beans:bean id="memberService"
 		class="com.coderdy.myapp.member.service.MemberService" />
 	<beans:bean id="naverLoginBO"

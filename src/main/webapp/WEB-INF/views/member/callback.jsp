@@ -18,7 +18,7 @@
 		<h4>NAME : ${name}</h4>
 		<h4>PHONE : ${phone}</h4>
 		<!--홈페이지 사인아웃 -->
-		<a href="<c:url value='/member/logout'/>">SIGN_OUT</a>
+		<a href="<c:url value='/member/logout'/>">LogOut</a>
 	</c:if>
 
 
