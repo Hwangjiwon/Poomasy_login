@@ -20,6 +20,7 @@ import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -222,7 +223,7 @@ public class MemberController {
 		snsMember.setSns_name(userInfo.get("properties").get("nickname").asText());
 
 		memberService.insertSnsMemberService(snsMember);
-
+	
 		return "member/kakaoCallback";
 	}
 
@@ -260,7 +261,7 @@ public class MemberController {
 		snsMember.setSns_id(profile.getId());
 		snsMember.setSns_name(profile.getDisplayName());
 		memberService.insertSnsMemberService(snsMember);
-
+		
 		return "member/googleCallback";
 	}
 
@@ -289,7 +290,15 @@ public class MemberController {
 		snsMember.setSns_email(jsonObj.get("email").toString());
 		snsMember.setSns_name(jsonObj.get("name").toString());
 		memberService.insertSnsMemberService(snsMember);
-
+		
 		return "member/facebookCallback";
+	}	
+	
+	@RequestMapping(value = "/member/updateSnsMember", method = { RequestMethod.GET, RequestMethod.POST })
+	public String updateSnsMember(SnsMemberVO snsMember, ModelMap modelMap) throws Exception {
+		modelMap.addAttribute("sns_id",snsMember.sns_id);
+		System.out.println("sns_idddddddddd " + snsMember.sns_id);
+		//memberService.updateSnsMemberService(snsMember);
+		return "member/updateSnsMember";
 	}
 }

@@ -52,4 +52,16 @@ public class MemberDAO implements IMemberDAO {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("com.coderdy.myapp.member.dao.mapper.MemberMapper.idCheck",userid);
 	}
+
+	@Override
+	public SnsMemberVO selectSnsMember(String sns_id) {
+		// TODO Auto-generated method stub
+		return (SnsMemberVO) sqlSession.selectOne("com.coderdy.myapp.member.dao.mapper.MemberMapper.selectSnsMember",sns_id);
+	}
+
+	@Override
+	public void updateSnsMember(SnsMemberVO snsMember) {
+		// TODO Auto-generated method stub
+		sqlSession.update("com.coderdy.myapp.member.dao.mapper.MemberMapper.updateSnsMember", snsMember);
+	}
 }

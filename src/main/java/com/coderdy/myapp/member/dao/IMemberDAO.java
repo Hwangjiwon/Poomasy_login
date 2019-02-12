@@ -12,4 +12,6 @@ public interface IMemberDAO {
 	MemberVO selectMember(String userid);
 	List<MemberVO> selectAllMembers();
 	public void insertSnsMember(SnsMemberVO snsMember);
+	SnsMemberVO selectSnsMember(String sns_id);
+	public void updateSnsMember(SnsMemberVO snsMember);
 }

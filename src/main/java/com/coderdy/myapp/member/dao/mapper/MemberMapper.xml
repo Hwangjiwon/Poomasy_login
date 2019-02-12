@@ -53,4 +53,26 @@
 			(#{sns_id}, #{sns_type}, #{sns_name}, #{sns_email})
 	]]>
 	</insert>
+	
+	<select id="selectSnsMember" parameterType="string"
+		resultType="com.coderdy.myapp.member.model.SnsMemberVO">
+	<![CDATA[
+		SELECT 
+			*
+		FROM 
+			sns_info
+		WHERE sns_id=#{sns_id}
+	]]>
+	</select>
+	
+	<update id ="updateSnsMember">
+	<![CDATA[
+		UPDATE sns_info
+		SET
+			sns_phone = #{sns_phone},
+			sns_gender= #{sns_gender}
+		WHERE
+			sns_id = #{sns_id}
+	]]>
+	</update>
 </mapper>

@@ -15,6 +15,8 @@
 		<div>Kakao Id : ${k_id}</div>
 		<div>Kakao name : ${k_name}</div>
 		<br>
+		
+		<button type ="button" onclick = "location.href='updateSnsMember'">MyPage</button>
 		<a href="<c:url value='https://accounts.kakao.com/weblogin/account/connected_apps#pageConnectedAppDetail'/>">SIGN_OUT</a>
 	</c:if>
 
