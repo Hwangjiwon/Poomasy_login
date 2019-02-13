@@ -14,7 +14,6 @@
 		<div>Google Id : ${g_userId}</div>
 		<br>
 		
-		<button type ="button" onclick = "location.href='updateSnsMember'">MyPage</button>
 		<a href="<c:url value='https://myaccount.google.com/permissions?utm_source=google-account&utm_medium=web'/>">SIGN_OUT</a>
 	</c:if>
 	

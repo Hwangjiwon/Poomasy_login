@@ -44,7 +44,16 @@
 			member
 	]]>
 	</select>
-
+	<update id="updateMember">
+	<![CDATA[
+		UPDATE member
+		SET
+			gender = #{gender},
+			age = #{age}
+		WHERE
+			userid = #{userid}
+	]]>
+	</update>
 	<insert id="insertSnsMember">
 	<![CDATA[
 		INSERT INTO 
@@ -53,7 +62,7 @@
 			(#{sns_id}, #{sns_type}, #{sns_name}, #{sns_email})
 	]]>
 	</insert>
-	
+
 	<select id="selectSnsMember" parameterType="string"
 		resultType="com.coderdy.myapp.member.model.SnsMemberVO">
 	<![CDATA[
@@ -64,8 +73,8 @@
 		WHERE sns_id=#{sns_id}
 	]]>
 	</select>
-	
-	<update id ="updateSnsMember">
+
+	<update id="updateSnsMember">
 	<![CDATA[
 		UPDATE sns_info
 		SET

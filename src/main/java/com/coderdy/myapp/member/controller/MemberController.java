@@ -20,7 +20,6 @@ import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -174,6 +173,26 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	@RequestMapping(value = "/member/update", method = RequestMethod.GET)
+	public String update() {
+		System.out.println("update");
+		
+		return "member/update";
+	}
+	
+	@RequestMapping(value = "/member/updateCallback", method = RequestMethod.GET)
+	public String updateCallback() {
+		
+		return "meber/updateCallback";
+	}
+	@RequestMapping(value = "/member/updateCallback", method = RequestMethod.POST)
+	public String updateCallback(HttpSession session, MemberVO member) {
+		
+		memberService.updateMemberService(member);
+		session.invalidate(); // logout
+		
+		return "redirect:/";
+	}
 	
 	// 네이버 로그인 성공시 callback호출 메소드
 	@RequestMapping(value = "/member/naverCallback", method = { RequestMethod.POST, RequestMethod.GET })
@@ -293,12 +312,5 @@ public class MemberController {
 		
 		return "member/facebookCallback";
 	}	
-	
-	@RequestMapping(value = "/member/updateSnsMember", method = { RequestMethod.GET, RequestMethod.POST })
-	public String updateSnsMember(SnsMemberVO snsMember, ModelMap modelMap) throws Exception {
-		modelMap.addAttribute("sns_id",snsMember.sns_id);
-		System.out.println("sns_idddddddddd " + snsMember.sns_id);
-		//memberService.updateSnsMemberService(snsMember);
-		return "member/updateSnsMember";
-	}
+
 }

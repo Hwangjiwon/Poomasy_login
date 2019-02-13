@@ -43,6 +43,12 @@ public class MemberService implements IMemberService {
 	}
 
 	@Override
+	public void updateMemberService(MemberVO member) {
+		// TODO Auto-generated method stub
+		memberDao.updateMember(member);
+	}
+
+	@Override
 	public void insertSnsMemberService(SnsMemberVO snsMember) {
 		// TODO Auto-generated method stub
 		logger.info("insertSnsMemberService " + snsMember);
@@ -65,5 +71,6 @@ public class MemberService implements IMemberService {
 	public void updateSnsMemberService(SnsMemberVO snsMember) {
 		// TODO Auto-generated method stub
 		memberDao.updateSnsMember(snsMember);
-	}	
+	}
+
 }
