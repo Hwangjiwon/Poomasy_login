@@ -18,15 +18,13 @@
 		<div>EMAIL : ${email}</div>
 		<div>NAME : ${name}</div>
 		<div>PHONE : ${phone}</div>
+		<div>GENDER : ${gender}</div>
+		<div>AGE : ${age}</div>
+		
 		<!--홈페이지 사인아웃 -->
 		<form action = "/myapp/member/update" method ="get">
 		<input type="hidden" name = "userid" value="${userid}">
-		<br>
-		<input type="hidden" name = "email" value="${email}">
-		<br>
-		<input type="hidden" name = "name" value="${name}">
-		<input type="hidden" name = "phone" value = "${phone}">
-		<input type="submit" value="Mypage">
+		<input type="submit" value="UpdateInfo">
 		</form>
 		<a href="<c:url value='/member/logout'/>">LogOut</a>
 	</c:if>

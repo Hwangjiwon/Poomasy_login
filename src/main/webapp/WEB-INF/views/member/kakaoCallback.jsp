@@ -10,13 +10,18 @@
 </head>
 <body>
 	<!-- 카카오로그인 -->
-	<c:if test="${not empty k_userInfo}">
-		<div>Kakao Login : ${k_userInfo}</div>
-		<div>Kakao Id : ${k_id}</div>
-		<div>Kakao name : ${k_name}</div>
+	<c:if test="${not empty sns_info}">
+		<div>Kakao Login : ${sns_info}</div>
+		<div>Kakao Id : ${sns_id}</div>
+		<div>Kakao name : ${sns_name}</div>
 		<br>
 		
-		<button type ="button" onclick = "location.href='updateSnsMember'">MyPage</button>
+		<form action = "/myapp/member/updateSnsMember" method ="get">
+		<input type="hidden" name = "sns_id" value="${sns_id}">
+		<input type="hidden" name = "sns_type" value="kakao">
+		<input type="submit" value="UpdateInfo">
+		</form>
+
 		<a href="<c:url value='https://accounts.kakao.com/weblogin/account/connected_apps#pageConnectedAppDetail'/>">SIGN_OUT</a>
 	</c:if>
 

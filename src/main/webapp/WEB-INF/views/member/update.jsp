@@ -8,24 +8,16 @@
 <body>
 <%
 	String userid = request.getParameter("userid");
-	String email = request.getParameter("email");
-	String name = request.getParameter("name");
-	String phone = request.getParameter("phone");
+
 %>
 	<h1>Update Info!!</h1>
 	
 		id : <%=userid%><br>
-		email : <%=email%><br>
-		name : <%=name%><br> 
-		phone : <%=phone%><br>
 		
 		<p>
 		<form action = "/myapp/member/updateCallback" method="post">
 			<input type = "hidden" id = "userid" name = "userid" value = "<%=userid%>">
-			<input type = "hidden" id = "email" name = "email" value = "<%=email%>">
-			<input type = "hidden" id = "named" name = "name" value = "<%=name%>">
-			<input type = "hidden" id = "phone" name = "phone" value = "<%=phone%>">
-		
+
 			<input type = "radio" id="gender" name="gender" value="female"/>Female
 			<input type = "radio" id="gender" name="gender" value="male"/>Male
 			<br>

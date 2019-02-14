@@ -29,6 +29,12 @@ public class MemberService implements IMemberService {
 	}
 
 	@Override
+	public MemberVO idCheck(String userid) {
+		// TODO Auto-generated method stub
+		return memberDao.idCheck(userid);
+	}
+
+	@Override
 	public MemberVO selectMemberService(String userid) {
 		// TODO Auto-generated method stub
 		logger.info("selectMemberService " + userid.toString());
@@ -51,14 +57,7 @@ public class MemberService implements IMemberService {
 	@Override
 	public void insertSnsMemberService(SnsMemberVO snsMember) {
 		// TODO Auto-generated method stub
-		logger.info("insertSnsMemberService " + snsMember);
 		memberDao.insertSnsMember(snsMember);
-	}
-
-	@Override
-	public MemberVO idCheck(String userid) {
-		// TODO Auto-generated method stub
-		return memberDao.idCheck(userid);
 	}
 
 	@Override

@@ -8,9 +8,6 @@
 <body>
 <%
 	String userid = request.getParameter("userid");
-	String email = request.getParameter("email");
-	String name = request.getParameter("name");
-	String phone = request.getParameter("phone");
 	String gender = request.getParameter("gender");
 	String age = request.getParameter("age");
 %>
@@ -18,14 +15,11 @@
 
 	
 		
-		id : <%=userid%><br>
-		email : <%=email%><br>
-		name : <%=name%><br> 
-		phone : <%=phone%><br>
-		gender : <%=gender%><br>
-		age : <%=age%><br>
+		<div>id : <%=userid%></div>
+		<div>gender : <%=gender%></div>
+		<div>age : <%=age%></div>
 
-	<a href="home">Home</a>
-	<a href="login">Login</a>
+	<a href="<c:url value='/member/callback'/>">MyPage</a>
+	<a href="<c:url value='/member/logout'/>">LogOut</a>
 </body>
 </html>
